@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/SiliconBasedWorker/sbw_plugin_plane-filed/issues"
   },
-  "homepage": "https://github.com/SiliconBasedWorker/sbw_plugin_plane-filed#readme"
+  "homepage": "https://github.com/SiliconBasedWorker/sbw_plugin_plane-filed#readme",
+  "dependencies": {
+    "fs-extra": "^10.0.1"
+  }
 }

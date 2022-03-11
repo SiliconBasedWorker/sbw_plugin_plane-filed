@@ -1,10 +1,16 @@
 const path = require("path");
 const fs = require("fs");
+const fs_extra = require("fs-extra");
 
 let dataFilePath = "";
 
-const setDataFilePath = (filePath) => {
-    dataFilePath = filePath;
+const setDataFileDirPath = (dirPath) => {
+    dataFilePath = path.join(dirPath, "sub.json")
+    // 确保目录和文件存在
+
+    // fs_extra.ensureDirSync(dirPath);
+    fs_extra.ensureFileSync(dataFilePath);
+
 }
 
 let data = {};
@@ -25,7 +31,7 @@ const loadFromFile = () => {
         let d = fs.readFileSync(dataFilePath);
         data = JSON.parse(d);
     } catch (error) {
-        console.log(error);
+        console.log(dataFilePath, "is not exist or is blank");
     }
 }
 
@@ -34,7 +40,7 @@ const dataItem = (
     siteUrl = "",
     sub = {}
 ) => {
-    return {siteUrl,sub}
+    return { siteUrl, sub }
 }
 
 const setData = (name, dataSet) => {
@@ -65,8 +71,8 @@ const getDataAllData = () => {
     return d;
 }
 
-const initModule = (dataFilePath) => {
-    setDataFilePath(dataFilePath);
+const initModule = (dataFileDirPath) => {
+    setDataFileDirPath(dataFileDirPath);
     loadFromFile();
 }
 
