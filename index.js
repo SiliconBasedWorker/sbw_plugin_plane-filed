@@ -6,9 +6,6 @@ let dataFilePath = "";
 
 const setDataFileDirPath = (dirPath) => {
     dataFilePath = path.join(dirPath, "sub.json")
-    // 确保目录和文件存在
-
-    // fs_extra.ensureDirSync(dirPath);
     fs_extra.ensureFileSync(dataFilePath);
 
 }
@@ -16,7 +13,6 @@ const setDataFileDirPath = (dirPath) => {
 let data = {};
 
 const saveToFile = () => {
-
     try {
         fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 4))
     } catch (err) {
@@ -78,10 +74,10 @@ const initModule = (dataFileDirPath) => {
 
 module.exports = {
     initModule, // setDataFilePath and load data from file
-    saveToFile, // modify data and save json to file
+    saveToFile, // save json to file
     dataItem, // create one new data
-    setData, // 
-    getData,
-    deleteData,
-    getDataAllData
+    setData, // add or modify dataItem in memory
+    getData, // get data by name or blank object
+    deleteData, // delete data by name
+    getDataAllData // get all data list by name
 }
