@@ -40,7 +40,7 @@ class DataController {
             });
             this.data = dd;
         } catch (error) {
-            console.log(this.dataFilePath, "is not exist or is blank", error);
+            console.log(this.dataFilePath, "is not exist or is blank");
         }
     }
 
