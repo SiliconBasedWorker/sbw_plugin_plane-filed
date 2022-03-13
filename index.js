@@ -15,6 +15,8 @@ class SiteItem {
         this.name = name
         this.siteUrl = siteUrl
         this.sub = subList
+        this.expireTimestamp = Date.now()
+        this.price = 0.0
     }
 }
 
