@@ -44,16 +44,20 @@ class DataController {
     }
 
     parseJSONToObject(jsonArray) {
-        let dd = [];
-        jsonArray.forEach(e => {
-            let siteItem = new SiteItem(e.name, e.siteUrl, []);
-            e.sub.forEach(ee => {
-                let subItem = new SubItem(ee.name, ee.url);
-                siteItem.sub.push(subItem);
+        try {
+            let dd = [];
+            jsonArray.forEach(e => {
+                let siteItem = new SiteItem(e.name, e.siteUrl, []);
+                e.sub.forEach(ee => {
+                    let subItem = new SubItem(ee.name, ee.url);
+                    siteItem.sub.push(subItem);
+                });
+                dd.push(siteItem);
             });
-            dd.push(siteItem);
-        });
-        this.data = dd;
+            this.data = dd;
+        } catch (error) {
+            console.log("parseJSONToObject", error);
+        }
     }
 }
 
