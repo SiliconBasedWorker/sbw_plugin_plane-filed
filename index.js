@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const fs_extra = require("fs-extra");
 
-
 class SubItem {
     constructor(name, url) {
         this.name = name
@@ -17,6 +16,7 @@ class SiteItem {
         this.sub = subList
         this.expireTimestamp = Date.now()
         this.price = 0.0
+        this.note = ""
     }
 }
 
