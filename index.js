@@ -29,16 +29,7 @@ class DataController {
     loadFromFile() {
         try {
             let d = JSON.parse(fs.readFileSync(this.dataFilePath));
-            let dd = [];
-            d.forEach(e => {
-                let siteItem = new SiteItem(e.name, e.siteUrl, []);
-                e.sub.forEach(ee => {
-                    let subItem = new SubItem(ee.name, ee.url);
-                    siteItem.sub.push(subItem);
-                });
-                dd.push(siteItem);
-            });
-            this.data = dd;
+            this.parseJSONToObject(d);
         } catch (error) {
             console.log(this.dataFilePath, "is not exist or is blank");
         }
@@ -50,6 +41,19 @@ class DataController {
         } catch (err) {
             console.error(err)
         }
+    }
+
+    parseJSONToObject(jsonArray) {
+        let dd = [];
+        jsonArray.forEach(e => {
+            let siteItem = new SiteItem(e.name, e.siteUrl, []);
+            e.sub.forEach(ee => {
+                let subItem = new SubItem(ee.name, ee.url);
+                siteItem.sub.push(subItem);
+            });
+            dd.push(siteItem);
+        });
+        this.data = dd;
     }
 }
 
