@@ -1,15 +1,22 @@
-const app = require("./index");
+const { SiteItem, SubItem, DataController } = require("./index");
 
 const path = require("path");
 
-app.initModule(path.join(__dirname, "data"));
-
-app.setData("v2tun", app.dataItem());
-// app.setData("v2tun1", app.dataItem());
-// app.setData("v2tun2", app.dataItem());
+let dataController = new DataController(path.join(__dirname, "data"));
 
 
-app.saveToFile()
+// dataController.data.push(new SiteItem("a", "b", [new SubItem("x", "y")]))
+// dataController.saveToFile();
 
-let a = app.getDataAllData()
-console.log(a);
+const addSiteItem = (siteName, siteUrl, subList) => {
+    dataController.data.push(new SiteItem(siteName, siteUrl, subList));
+}
+
+const createSubItem = (subName, subUrl) => {
+    return new SubItem(subName, subUrl);
+}
+
+const getJson = () => {
+    console.log(dataController.data);
+    console.log(JSON.stringify(dataController.data));
+}

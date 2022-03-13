@@ -2,82 +2,59 @@ const path = require("path");
 const fs = require("fs");
 const fs_extra = require("fs-extra");
 
-let dataFilePath = "";
 
-const setDataFileDirPath = (dirPath) => {
-    dataFilePath = path.join(dirPath, "sub.json")
-    fs_extra.ensureFileSync(dataFilePath);
-
-}
-
-let data = {};
-
-const saveToFile = () => {
-    try {
-        fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 4))
-    } catch (err) {
-        console.error(err)
-    }
-
-}
-
-// load from file before normal running 
-const loadFromFile = () => {
-    try {
-        let d = fs.readFileSync(dataFilePath);
-        data = JSON.parse(d);
-    } catch (error) {
-        console.log(dataFilePath, "is not exist or is blank");
+class SubItem {
+    constructor(name, url) {
+        this.name = name
+        this.url = url
     }
 }
 
-
-const dataItem = (
-    siteUrl = "",
-    sub = {}
-) => {
-    return { siteUrl, sub }
-}
-
-const setData = (name, dataSet) => {
-    data[name] = dataSet;
-    saveToFile()
-}
-const getData = (name) => {
-    if (data.hasOwnProperty(name)) {
-        return data[name];
-    } else {
-        return dataItem();
+class SiteItem {
+    constructor(name, siteUrl, subList) {
+        this.name = name
+        this.siteUrl = siteUrl
+        this.sub = subList
     }
 }
 
-const deleteData = (name) => {
-    try {
-        delete data[name];
-    } catch (error) {
-        console.log("deleteData", name, error);
+class DataController {
+    constructor(dataFileDirPath) {
+        this.dataFilePath = path.join(dataFileDirPath, "sub.json")
+        fs_extra.ensureFileSync(this.dataFilePath)
+        this.data = []
+        this.loadFromFile()
     }
-}
 
-const getDataAllData = () => {
-    let d = [];
-    for (let k in data) {
-        d.push({ name: k, sub: data[k].sub, siteUrl: data[k].siteUrl });
+    loadFromFile() {
+        try {
+            let d = JSON.parse(fs.readFileSync(this.dataFilePath));
+            let dd = [];
+            d.forEach(e => {
+                let siteItem = new SiteItem(e.name, e.siteUrl, []);
+                e.sub.forEach(ee => {
+                    let subItem = new SubItem(ee.name, ee.url);
+                    siteItem.sub.push(subItem);
+                });
+                dd.push(siteItem);
+            });
+            this.data = dd;
+        } catch (error) {
+            console.log(this.dataFilePath, "is not exist or is blank", error);
+        }
     }
-    return d;
-}
 
-const initModule = (dataFileDirPath) => {
-    setDataFileDirPath(dataFileDirPath);
-    loadFromFile();
+    saveToFile() {
+        try {
+            fs.writeFileSync(this.dataFilePath, JSON.stringify(this.data, null, 4))
+        } catch (err) {
+            console.error(err)
+        }
+    }
 }
 
 module.exports = {
-    initModule, // setDataFilePath and load data from file
-    saveToFile, // save json to file
-    dataItem, // create one new data
-    setData, // add or modify dataItem in memory
-    getData, // get data by name or blank object
-    deleteData, // delete data by name
-    getDataAllData // get all data list by name
+    DataController,
+    SiteItem,
+    SubItem
 }
